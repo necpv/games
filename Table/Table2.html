@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    td {  
+	  border: 1px solid white;
+      padding: 1px;
+      text-align: center;
+    }
+	
+	.minus {
+	  height: 40px;
+	  width: 40px;
+	  color: white;
+	  font-size: 30px;
+	  background-color: white;
+	  border: 1px solid white;
+	}
+	
+	.plus {
+	  height: 40px;
+	  width: 40px;
+	  color: white;
+	  font-size: 30px;
+	  background-color: gold;
+	  border: 1px solid white;
+	}
+	
+	.field {
+	  height: 40px;
+	  width: 40px;
+	  background-color: DodgerBlue;
+	  border: 1px solid white;
+	}
+	
+	.tab { border: 1px solid DodgerBlue; }	
+	.tabr { border-right: 1px solid DodgerBlue; }
+	.tabb { border-bottom: 1px solid DodgerBlue; }
+
+  </style>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <td></td>
+      <td class='tabb'>
+        <table>
+          <tr><td class='minus' id='rY0' onclick=removeY() onmouseover=mouseOverMinusY(event)>-</td></tr>
+        </table>
+      <td>
+    </tr>
+    <tr>
+      <td class='tabr'>
+        <table>
+          <tr  id='lineX0'><td class='minus' onclick=removeX() onmouseover=mouseOverMinusX(event)>-</td></tr>
+        </table>
+      </td>
+      <td class='tab'>
+	    <table>
+          <tr id='lineX'><td class='field' id='rY' onmouseover=mouseOverField(event)></td></tr>
+	    </table>
+
+      </td>
+      <td valign="top">
+        <table>
+          <tr><td class='plus' onclick=addX() onmouseover=mouseOverPlus(event)>+</td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td align="center">
+        <table>
+          <tr><td class='plus' onclick=addY() onmouseover=mouseOverPlus(event)>+</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+
+  <div id="number"></div>
+
+  <script>
+    let lineX = document.getElementById('lineX');
+	let lineX0 = document.getElementById('lineX0');
+	let rY = document.getElementById('rY');
+	let rY0 = document.getElementById('rY0');
+	addX(); addX();	addX();
+	addY(); addY();	addY();
+    
+	function addX(){
+	  lineX.after(lineX.cloneNode(true));
+	  lineX0.after(lineX0.cloneNode(true));
+    }
+	
+	function removeX(){
+	  if (lineX.nextElementSibling) lineX.nextElementSibling.remove();
+	  if (lineX0.nextElementSibling) lineX0.nextElementSibling.remove();
+    }
+	
+	function addY(){
+	  rY0.after(rY0.cloneNode(true));
+	  for (let i=0; i<lineX.parentElement.children.length; i++){
+	    lineX.parentElement.children[i].append(rY.cloneNode(true));
+	}}
+	
+	function removeY(){
+	  if (rY0.nextElementSibling){
+	    rY0.nextElementSibling.remove();
+		for (let i=0; i<lineX.parentElement.children.length; i++){
+		  lineX.parentElement.children[i].lastElementChild.remove();
+	}}}
+	
+	function mouseOverField(event){
+	  let x=0;
+	  let elem = event.currentTarget
+	  while(elem.previousElementSibling){
+	    x+=1;
+		elem=elem.previousElementSibling;
+	  };
+	  
+	  let y=0;
+	  elem = event.currentTarget.parentElement;
+	  while(elem.previousElementSibling){
+	    y+=1;
+		elem=elem.previousElementSibling;
+	  };
+	  
+	  if (lineX0.parentElement.children[1]){
+	    lineX0.parentElement.children[y].firstElementChild.style.backgroundColor = 'red';
+	  }
+	  if (rY0.parentElement.children[1]){
+	    rY0.parentElement.children[x].style.backgroundColor = 'red';
+	  }
+	  
+	  let promise = new Promise(function(resolve, reject) {
+	    event.currentTarget.onmouseout = () => resolve();
+	  });
+	  promise.then(()=>{
+		lineX0.parentElement.children[y].firstElementChild.style.backgroundColor = '';
+	    rY0.parentElement.children[x].style.backgroundColor = '';
+	  })
+	}
+	
+	function mouseOverMinusX(event){
+	  let elem = event.currentTarget
+	  if (lineX0.parentElement.children[1]){
+	    elem.style.backgroundColor = 'FireBrick';
+	  }
+	  
+	  let promise = new Promise(function(resolve, reject) {
+	    elem.onmouseout = () => resolve();
+	  });
+	  promise.then(()=>{elem.style.backgroundColor = '';})
+	}
+	
+	function mouseOverMinusY(event){
+	  let elem = event.currentTarget
+	  if (rY0.parentElement.children[1]){
+	    elem.style.backgroundColor = 'FireBrick';
+	  }
+	  
+	  let promise = new Promise(function(resolve, reject) {
+	    elem.onmouseout = () => resolve();
+	  });
+	  promise.then(()=>{elem.style.backgroundColor = '';})
+	}
+	
+	function mouseOverPlus(event){
+	  let elem = event.currentTarget
+	  elem.style.backgroundColor = 'yellow';
+	  
+	  let promise = new Promise(function(resolve, reject) {
+	    elem.onmouseout = () => resolve();
+	  });
+	  promise.then(()=>{elem.style.backgroundColor = '';})
+	}
+	
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+body {
+	margin: 100px;
+	background: linear-gradient(140deg, blue, yellow);
+}
+
+.line {
+	height: 100px;
+}
+
+.sqr {
+	margin: 5px;
+	height: 65px;
+	width: 90px;
+	position: relative;
+	background-color: yellow;
+	float: left;
+	border-radius: 10px;
+	font-size: 30px;
+	text-align: center;
+	padding-top: 25px;
+	pa
+}
+
+h2 {
+	color: white;
+	font-size: 30px;
+}
